@@ -1,0 +1,41 @@
+{
+  "name": "blogsia",
+  "version": "1.0.0",
+  "description": "A blog website built with MERN stack",
+  "main": "server.js",
+  "repository": "https://github.com/McToluene/bogsia.git",
+  "author": "McToluene",
+  "license": "MIT",
+  "scripts": {
+    "watch-ts": "tsc -w",
+    "start-dev": "nodemon dist/server.js",
+    "client": "yarn --cwd client run start",
+    "dev": "concurrently \"yarn watch-ts \" \"yarn start-dev\" \"yarn client\" "
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "concurrently": "^5.1.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-validator": "^6.3.1",
+    "gravatar": "^1.8.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.8.10",
+    "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.2",
+    "@types/eslint": "^6.1.7",
+    "@types/express": "^4.17.2",
+    "@types/gravatar": "^1.8.0",
+    "@types/jsonwebtoken": "^8.3.7",
+    "@types/mongoose": "^5.7.0",
+    "@types/node": "^13.5.1",
+    "@typescript-eslint/eslint-plugin": "^2.18.0",
+    "@typescript-eslint/parser": "^2.18.0",
+    "eslint": "^6.8.0",
+    "nodemon": "^2.0.2",
+    "ts-node": "^8.6.2",
+    "typescript": "^3.7.5"
+  }
+}
