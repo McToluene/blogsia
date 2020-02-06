@@ -2,15 +2,22 @@ import mongoose from "mongoose";
 
 export type UserDocument = mongoose.Document & {
   name: string;
+  username: string;
   email: string;
   password: string;
+  googleid: string;
   avatar: string;
+  token: string;
 };
 
 const UserSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true
+  },
+
+  username: {
+    type: String
   },
 
   email: {
@@ -24,7 +31,15 @@ const UserSchema = new mongoose.Schema({
     required: true
   },
 
+  googleid: {
+    type: String
+  },
+
   avatar: {
+    type: String
+  },
+
+  token: {
     type: String
   },
 

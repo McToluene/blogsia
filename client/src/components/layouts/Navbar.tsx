@@ -5,6 +5,7 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import { Container, Link } from "@material-ui/core";
+import { Link as RouterLink } from "react-router-dom";
 
 interface INavProps {
   sections: any[];
@@ -43,7 +44,6 @@ const Navbar: React.FC<INavProps> = props => {
     <React.Fragment>
       <Container maxWidth="lg">
         <Toolbar className={classes.toolbar}>
-          {/* <Button size="small">Subscribe</Button> */}
           <Typography
             component="h2"
             variant="h5"
@@ -51,20 +51,25 @@ const Navbar: React.FC<INavProps> = props => {
             noWrap
             className={classes.toolbarTitle}
           >
-            {title}
+            <RouterLink to="/">{title}</RouterLink>
           </Typography>
-          <Button
-            className={classes.loginBtn}
-            variant="outlined"
-            color="primary"
-            size="small"
-          >
-            <ExitToAppIcon />
-            Login
-          </Button>
-          <Button variant="outlined" color="primary" size="small">
-            Sign up
-          </Button>
+
+          <RouterLink to="/login">
+            <Button
+              className={classes.loginBtn}
+              variant="outlined"
+              color="primary"
+              size="small"
+            >
+              <ExitToAppIcon />
+              Login
+            </Button>
+          </RouterLink>
+          <RouterLink to="/register">
+            <Button variant="outlined" color="primary" size="small">
+              Sign up
+            </Button>
+          </RouterLink>
         </Toolbar>
         <Toolbar
           component="nav"
