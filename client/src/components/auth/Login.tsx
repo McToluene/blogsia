@@ -1,5 +1,7 @@
 import React, { useState, ChangeEvent, FormEvent, FC } from "react";
+import { loginUser } from "../../store/auth/action";
 import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 import { setAlert } from "../../store/alert/action";
 import {
   makeStyles,
@@ -26,25 +28,30 @@ const useStyles = makeStyles(theme => ({
     alignItems: "center",
     marginBottom: theme.spacing(8)
   },
+
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main
   },
+
   form: {
     width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1)
   },
+
   submit: {
     margin: theme.spacing(3, 0, 2)
   }
 }));
 
 interface ILoginProps {
+  isAuthenticated: boolean;
   setAlert: (
     message: string,
     alertType: "success" | "error" | "info" | "warning",
     open: boolean
   ) => void;
+  loginUser: (eamil: string, password: string) => void;
 }
 
 const Login: FC<ILoginProps> = props => {
@@ -62,10 +69,13 @@ const Login: FC<ILoginProps> = props => {
 
   const onSubmitHandler = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (email.length < 3) {
-      props.setAlert("Email length is small", "error", true);
-    }
+    props.loginUser(email, password);
   };
+
+  // Redirect if logged in
+  if (props.isAuthenticated) {
+    return <Redirect to="/" />;
+  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -178,4 +188,8 @@ const Login: FC<ILoginProps> = props => {
   );
 };
 
-export default connect(null, { setAlert })(Login);
+const mapStateToProps = (state: any) => ({
+  isAuthenticated: state.auth.isAuthenticated
+});
+
+export default connect(mapStateToProps, { setAlert, loginUser })(Login);

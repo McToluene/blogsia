@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Dispatch } from "redux";
-import { REGISTER_SUCCESS, REGISTER_FAIL, USER_LOADED, AUTH_ERROR } from "./type";
+import { REGISTER_SUCCESS, REGISTER_FAIL, USER_LOADED, AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAIL } from "./type";
 import { setAlert } from "../alert/action";
 import { IUser } from "../../models/User";
 import setAuthToken from "../../utils/setAuthToken";
@@ -25,7 +25,6 @@ export const  loadUser = () => async (dispatch: Dispatch) => {
   }
 }
 
-
 export const registerUser = (user: IUser) => async (
   dispatch: Dispatch<any>
 ) => {
@@ -40,6 +39,7 @@ export const registerUser = (user: IUser) => async (
       type: REGISTER_SUCCESS,
       payload: res.data
     });
+    dispatch(loadUser());
   } catch (error) {
     const errors = error.response?.data.errors;
     console.log(errors);
@@ -53,3 +53,34 @@ export const registerUser = (user: IUser) => async (
     });
   }
 };
+
+export const loginUser = (email: string, password: string) => async(dispatch: Dispatch<any>) => {
+  const config = {
+    headers: {
+      "Context-Type": "application/json"
+    }
+  };
+  try {
+    const user = {
+      email, 
+      password
+    }
+    const res = await axios.post(BASE_URL + "/api/auth", user, config);
+    dispatch({
+      type: LOGIN_SUCCESS,
+      payload: res.data
+    });
+
+    dispatch(loadUser());
+  } catch (error) {
+    const errors = error.response?.data.errors;
+    if (errors) {
+      errors.forEach((error: any) =>
+        dispatch(setAlert(error.msg, "error", true))
+      );
+    }
+    dispatch({
+      type: LOGIN_FAIL
+    });
+  }
+}

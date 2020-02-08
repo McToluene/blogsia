@@ -2,6 +2,8 @@ export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
 export const REGISTER_FAIL = "REGISTER_FAIL";
 export const USER_LOADED = "USER_LOADED";
 export const AUTH_ERROR = "AUTH_ERROR";
+export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
+export const LOGIN_FAIL = "LOGIN_FAIL";
 
 export interface AuthState {
   token: string | null;
@@ -30,4 +32,14 @@ interface AuthErrorAction {
   payload: AuthState;
 }
 
-export type AuthActionTypes = RegisterSuccessAction | RegisterFailAction | UserLoadedAction | AuthErrorAction;
+interface LoginSuccessAction {
+  type: typeof LOGIN_SUCCESS,
+  payload: AuthState
+}
+
+interface LoginFailAction {
+  type: typeof LOGIN_FAIL,
+  payload: AuthState
+}
+
+export type AuthActionTypes = RegisterSuccessAction | RegisterFailAction | UserLoadedAction | AuthErrorAction | LoginSuccessAction | LoginFailAction;

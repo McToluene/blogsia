@@ -1,4 +1,5 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
+import { Redirect } from "react-router-dom";
 import {
   makeStyles,
   Container,
@@ -48,6 +49,7 @@ interface IRegisterData {
 }
 
 interface IProps {
+  isAuthenticated: boolean;
   registerUser: (user: IUser) => void;
 }
 
@@ -76,6 +78,11 @@ const Register: React.FC<IProps> = props => {
 
     props.registerUser(newUser);
   };
+
+  // Redirect if logged in
+  if (props.isAuthenticated) {
+    return <Redirect to="/" />;
+  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -177,4 +184,8 @@ const Register: React.FC<IProps> = props => {
   );
 };
 
-export default connect(null, { registerUser })(Register);
+const mapStateToProps = (state: any) => ({
+  isAuthenticated: state.auth.isAuthenticated
+});
+
+export default connect(mapStateToProps, { registerUser })(Register);

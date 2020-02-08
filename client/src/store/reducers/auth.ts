@@ -17,10 +17,12 @@ export default function(state = initialState, action: AuthActionTypes) {
         user: payload
       }
     case "REGISTER_SUCCESS":
+    case "LOGIN_SUCCESS":
       const token: any = payload.token;
       localStorage.setItem("token", token);
       return { ...state, ...payload, isAuthenticated: true, loading: false };
     case "REGISTER_FAIL":
+    case "LOGIN_FAIL":
     case "AUTH_ERROR":
       localStorage.removeItem("token");
       return { ...state, token: null, isAuthenticated: false, loading: false };
