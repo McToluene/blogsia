@@ -40,7 +40,11 @@ const useStyles = makeStyles(theme => ({
 }));
 
 interface ILoginProps {
-  setAlert: (message: string, alertType: string) => void;
+  setAlert: (
+    message: string,
+    alertType: "success" | "error" | "info" | "warning",
+    open: boolean
+  ) => void;
 }
 
 const Login: FC<ILoginProps> = props => {
@@ -59,7 +63,7 @@ const Login: FC<ILoginProps> = props => {
   const onSubmitHandler = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (email.length < 3) {
-      props.setAlert("Email length is small", "danger");
+      props.setAlert("Email length is small", "error", true);
     }
   };
 

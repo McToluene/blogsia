@@ -1,0 +1,22 @@
+import { AuthState, AuthActionTypes } from "../auth/type";
+const initialState: AuthState = {
+  token: localStorage.getItem("token"),
+  isAuthenticated: false,
+  loading: true,
+  user: null
+};
+
+export default function(state = initialState, action: AuthActionTypes) {
+  const { type, payload } = action;
+  switch (type) {
+    case "REGISTER_SUCCESS":
+      const token: any = payload.token;
+      localStorage.setItem("token", token);
+      return { ...state, ...payload, isAuthenticated: true, loading: false };
+    case "REGISTER_FAIL":
+      localStorage.removeItem("token");
+      return { ...state, token: null, isAuthenticated: false, loading: false };
+    default:
+      return state;
+  }
+}

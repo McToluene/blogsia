@@ -11,6 +11,7 @@ import Register from "./components/auth/Register";
 import Footer from "./components/layouts/Footer";
 import { Provider } from "react-redux";
 import store from "./store/store";
+import CustomSnackbar from "./utils/CustomSnackbar";
 
 const sections = [
   { title: "Technology", url: "#" },
@@ -42,6 +43,7 @@ const App: React.FC<any> = props => {
               <Navbar sections={sections} title="Blogsia" />
               <main>
                 <Route path="/" exact={true} component={Landing} />
+                <CustomSnackbar />
                 <Switch>
                   <Route path="/login" exact={true} component={Login} />
                   <Route path="/register" exact={true} component={Register} />

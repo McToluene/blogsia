@@ -13,6 +13,9 @@ import {
   Link
 } from "@material-ui/core";
 import LockOutlined from "@material-ui/icons/LockOutlined";
+import { connect } from "react-redux";
+import { registerUser } from "../../store/auth/action";
+import { IUser } from "../../models/User";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -44,7 +47,11 @@ interface IRegisterData {
   password: string;
 }
 
-const Register = () => {
+interface IProps {
+  registerUser: (user: IUser) => void;
+}
+
+const Register: React.FC<IProps> = props => {
   const classes = useStyles();
   const [formData, setFormData] = useState<IRegisterData>({
     firstName: "",
@@ -61,7 +68,13 @@ const Register = () => {
 
   const onSubmitHandler = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(formData);
+    const newUser: IUser = {
+      email: formData.email,
+      name: formData.firstName + " " + formData.lastName,
+      password: formData.password
+    };
+
+    props.registerUser(newUser);
   };
 
   return (
@@ -164,4 +177,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default connect(null, { registerUser })(Register);

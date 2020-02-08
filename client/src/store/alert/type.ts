@@ -1,12 +1,8 @@
-enum AlertType {
-  success,
-  error
-}
-
 export interface Alert {
   id: string;
   message: string;
-  alertType: AlertType;
+  alertType: "success" | "error" | "info" | "warning";
+  open: boolean;
 }
 
 export interface AlertState {
