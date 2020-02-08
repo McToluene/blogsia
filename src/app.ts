@@ -6,12 +6,16 @@ import profileRoutes from "./routes/profile";
 import postRoutes from "./routes/posts";
 import categoryRoutes from "./routes/category";
 import configPassport from "./config/passport";
+import cors from "cors";
 
 const app = express();
 
 // SETTING PORT
 const PORT: string | number = process.env.PORT || 5000;
 app.set("port", PORT);
+
+// ser cros origin
+app.use(cors());
 
 // CONNECT TO DB
 connectDB();

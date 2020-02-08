@@ -12,6 +12,8 @@ import Footer from "./components/layouts/Footer";
 import { Provider } from "react-redux";
 import store from "./store/store";
 import CustomSnackbar from "./utils/CustomSnackbar";
+import setAuthToken from "./utils/setAuthToken";
+import { loadUser } from "./store/auth/action";
 
 const sections = [
   { title: "Technology", url: "#" },
@@ -26,13 +28,19 @@ const sections = [
   { title: "Travel", url: "#" }
 ];
 
+if (localStorage.token) {
+  setAuthToken(localStorage.token);
+}
+
 const App: React.FC<any> = props => {
   useEffect(() => {
     const query = queryString.parse(props.location?.search);
     if (query.token) {
-      window.localStorage.setItem("jwt", query.token.toString());
+      window.localStorage.setItem("token", query.token.toString());
       props.history.push("/");
     }
+
+    store.dispatch<any>(loadUser());
   }, []);
   return (
     <ThemeProvider theme={theme}>

@@ -1,5 +1,7 @@
 export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
 export const REGISTER_FAIL = "REGISTER_FAIL";
+export const USER_LOADED = "USER_LOADED";
+export const AUTH_ERROR = "AUTH_ERROR";
 
 export interface AuthState {
   token: string | null;
@@ -15,7 +17,17 @@ interface RegisterSuccessAction {
 
 interface RegisterFailAction {
   type: typeof REGISTER_FAIL;
-  payload?: any;
+  payload: AuthState;
 }
 
-export type AuthActionTypes = RegisterSuccessAction | RegisterFailAction;
+interface UserLoadedAction {
+  type: typeof USER_LOADED,
+  payload: AuthState
+}
+
+interface AuthErrorAction {
+  type: typeof AUTH_ERROR,
+  payload: AuthState;
+}
+
+export type AuthActionTypes = RegisterSuccessAction | RegisterFailAction | UserLoadedAction | AuthErrorAction;

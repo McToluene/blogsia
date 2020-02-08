@@ -9,11 +9,19 @@ const initialState: AuthState = {
 export default function(state = initialState, action: AuthActionTypes) {
   const { type, payload } = action;
   switch (type) {
+    case "USER_LOADED":
+      return {
+        ...state,
+        isAuthenticated: true,
+        loading: false,
+        user: payload
+      }
     case "REGISTER_SUCCESS":
       const token: any = payload.token;
       localStorage.setItem("token", token);
       return { ...state, ...payload, isAuthenticated: true, loading: false };
     case "REGISTER_FAIL":
+    case "AUTH_ERROR":
       localStorage.removeItem("token");
       return { ...state, token: null, isAuthenticated: false, loading: false };
     default:
