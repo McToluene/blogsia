@@ -1,17 +1,17 @@
 import React, { Fragment, useEffect } from "react";
 import queryString from "query-string";
 import "./App.css";
-import Navbar from "./components/layouts/Navbar";
+import Navbar from "./container/layouts/Navbar";
 import { ThemeProvider, Container } from "@material-ui/core";
 import theme from "./Theme";
-import Landing from "./components/layouts/Landing";
+import Landing from "./container/layouts/Landing";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
-import Footer from "./components/layouts/Footer";
+import Footer from "./container/layouts/Footer";
 import { Provider } from "react-redux";
 import store from "./store/store";
-import CustomSnackbar from "./utils/CustomSnackbar";
+import CustomSnackbar from "./components/CustomSnackbar";
 import setAuthToken from "./utils/setAuthToken";
 import { loadUser } from "./store/auth/action";
 
@@ -35,13 +35,14 @@ if (localStorage.token) {
 const App: React.FC<any> = props => {
   useEffect(() => {
     const query = queryString.parse(props.location?.search);
+    console.log(query);
     if (query.token) {
-      window.localStorage.setItem("token", query.token.toString());
+      localStorage.setItem("token", query.token.toString());
       props.history.push("/");
     }
 
     store.dispatch<any>(loadUser());
-  }, []);
+  });
   return (
     <ThemeProvider theme={theme}>
       <Provider store={store}>

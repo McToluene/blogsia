@@ -4,6 +4,7 @@ export const USER_LOADED = "USER_LOADED";
 export const AUTH_ERROR = "AUTH_ERROR";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGIN_FAIL = "LOGIN_FAIL";
+export const LOGOUT = "LOGOUT";
 
 export interface AuthState {
   token: string | null;
@@ -42,4 +43,9 @@ interface LoginFailAction {
   payload: AuthState
 }
 
-export type AuthActionTypes = RegisterSuccessAction | RegisterFailAction | UserLoadedAction | AuthErrorAction | LoginSuccessAction | LoginFailAction;
+interface LogoutAction {
+  type: typeof LOGOUT,
+  payload: AuthState
+}
+
+export type AuthActionTypes = RegisterSuccessAction | RegisterFailAction | UserLoadedAction | AuthErrorAction | LoginSuccessAction | LoginFailAction | LogoutAction;
