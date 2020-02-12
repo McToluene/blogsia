@@ -13,5 +13,6 @@ const configPassport = async (app: Application) => {
     done(null, user);
   });
   google();
+  
 };
 export default configPassport;

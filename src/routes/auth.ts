@@ -33,11 +33,13 @@ authRouter.get(
 
 authRouter.get(
   "/google/callback",
-  passport.authenticate("google", { failureRedirect: "/", session: false }),
+  passport.authenticate("google", { failureRedirect: "/login" }),
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (req: any, res) => {
-    const token = req.user.token;
-    res.redirect("http://localhost:3000?token=" + token);
+    const {user} = req;
+    const token= user;
+    res.json({token}).redirect("http://localhost:3000?token=" + token);
+    // return res.json({token});
   }
 );
 

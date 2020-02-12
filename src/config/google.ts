@@ -1,35 +1,38 @@
-import GoogleStrategy from "passport-google-oauth";
+import passportGoogle from "passport-google-oauth";
 import passport from "passport";
-import { User } from "../models/User";
-import logger from "../utils/logger";
+import { User, UserDocument, userTypes } from "../models/User";
 
-const Strategy = GoogleStrategy.OAuth2Strategy;
+const GoogleStrategy = passportGoogle.OAuth2Strategy;
 
 const callback = async (
   accessToken: string,
   refreshToken: string,
-  profile: GoogleStrategy.Profile,
-  done: GoogleStrategy.VerifyFunction
+  profile: passportGoogle.Profile,
+  done: passportGoogle.VerifyFunction
 ) => {
   try {
     const user = await User.findOne({ googleid: profile.id });
     if (user) {
-      return done(null, user, { message: "User" });
+      return done(null, user);
     }
 
-    const username = profile.displayName.split(" ");
-    const userData = new User({
+    const verifyEmail = await User.findOne({email: profile.emails[0].value});
+    if (verifyEmail) {
+      return done(null, accessToken);
+    }
+
+    const userData: UserDocument = new User({
+      provider: profile.provider,
+      providerId: profile.id,
       name: profile.displayName,
       email: profile.emails[0].value,
-      username: username[0],
-      token: accessToken,
-      googleId: profile.id,
-      avatar: profile.photos[0].value
+      username: profile.displayName,
+      password: null,
+      avatar: profile.photos[0].value,
+      type: userTypes.USER
     });
-
-    logger.debug(profile._json);
-    logger.debug(profile.toString());
     await userData.save();
+    return done(null, accessToken);
   } catch (error) {
     console.error(error.message);
     return done(error, false, { message: error.message });
@@ -38,11 +41,11 @@ const callback = async (
 
 const google = () => {
   passport.use(
-    new Strategy(
+    new GoogleStrategy(
       {
         clientID: process.env.CLIENT_ID,
         clientSecret: process.env.CLIENT_sECRET,
-        callbackURL: "/api/auth/google/callback"
+        callbackURL: `${process.env.SERVER_API_URL}/api/auth/google/callback`
       },
       callback
     )

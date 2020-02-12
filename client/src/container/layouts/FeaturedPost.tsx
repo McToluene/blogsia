@@ -2,25 +2,21 @@ import React from "react";
 import clsx from "clsx";
 import {
   Grid,
-  CardActionArea,
   Card,
   CardContent,
   Typography,
-  Hidden,
   CardMedia,
   makeStyles,
   CardHeader,
   Avatar,
   IconButton,
   CardActions,
-  Collapse,
   createStyles,
   Theme
 } from "@material-ui/core";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { red } from "@material-ui/core/colors";
 
 interface IPost {

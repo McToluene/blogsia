@@ -1,13 +1,20 @@
 import mongoose from "mongoose";
 
+export enum userTypes {
+  ADMIN,
+  WRITER,
+  USER
+
+}
 export type UserDocument = mongoose.Document & {
   name: string;
   username: string;
   email: string;
   password: string;
-  googleid: string;
+  provider: string;
+  providerId: string;
   avatar: string;
-  token: string;
+  type: userTypes;
 };
 
 const UserSchema = new mongoose.Schema({
@@ -28,10 +35,9 @@ const UserSchema = new mongoose.Schema({
 
   password: {
     type: String,
-    required: true
   },
 
-  googleid: {
+  provider: {
     type: String
   },
 
@@ -39,8 +45,13 @@ const UserSchema = new mongoose.Schema({
     type: String
   },
 
-  token: {
+  providerId: {
     type: String
+  },
+
+  type:{
+    type: userTypes,
+    required: true
   },
 
   date: {

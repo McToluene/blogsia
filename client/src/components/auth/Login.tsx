@@ -1,5 +1,5 @@
 import React, { useState, ChangeEvent, FormEvent, FC } from "react";
-import { loginUser } from "../../store/auth/action";
+import { loginUser, loginWithGoogle } from "../../store/auth/action";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { setAlert } from "../../store/alert/action";
@@ -14,35 +14,38 @@ import {
   Checkbox,
   Button,
   Grid,
-  Link
+  Link,
+  createStyles
 } from "@material-ui/core";
 
 import LockOutlined from "@material-ui/icons/LockOutlined";
 import "./Login.css";
 
-const useStyles = makeStyles(theme => ({
-  paper: {
-    marginTop: theme.spacing(8),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    marginBottom: theme.spacing(8)
-  },
+const useStyles = makeStyles(theme =>
+  createStyles({
+    paper: {
+      marginTop: theme.spacing(8),
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      marginBottom: theme.spacing(8)
+    },
 
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main
-  },
+    avatar: {
+      margin: theme.spacing(1),
+      backgroundColor: theme.palette.secondary.main
+    },
 
-  form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1)
-  },
+    form: {
+      width: "100%", // Fix IE 11 issue.
+      marginTop: theme.spacing(1)
+    },
 
-  submit: {
-    margin: theme.spacing(3, 0, 2)
-  }
-}));
+    submit: {
+      margin: theme.spacing(3, 0, 2)
+    }
+  })
+);
 
 interface ILoginProps {
   isAuthenticated: boolean;
@@ -52,10 +55,12 @@ interface ILoginProps {
     open: boolean
   ) => void;
   loginUser: (eamil: string, password: string) => void;
+  loginWithGoogle: () => void;
 }
 
 const Login: FC<ILoginProps> = props => {
   const classes = useStyles();
+
   const [formData, setFormData] = useState({
     email: "",
     password: ""
@@ -88,7 +93,7 @@ const Login: FC<ILoginProps> = props => {
           Sign in
         </Typography>
         <Grid item xs={12} sm={6}>
-          <a href="/api/auth/google" className="button">
+          <a href="http://localhost:5000/api/auth/google" className="button">
             <div>
               <span className="svgIcon t-popup-svg">
                 <svg
@@ -192,4 +197,8 @@ const mapStateToProps = (state: any) => ({
   isAuthenticated: state.auth.isAuthenticated
 });
 
-export default connect(mapStateToProps, { setAlert, loginUser })(Login);
+export default connect(mapStateToProps, {
+  setAlert,
+  loginUser,
+  loginWithGoogle
+})(Login);

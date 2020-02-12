@@ -3,7 +3,7 @@ import { validationResult } from "express-validator";
 import jwt from "jsonwebtoken";
 import gravatar from "gravatar";
 import bcrypt from "bcryptjs";
-import { User } from "../models/User";
+import { User, userTypes } from "../models/User";
 import logger from "../utils/logger";
 import { SESSION_SECRET } from "../utils/secrets";
 
@@ -30,7 +30,8 @@ export const register = async (req: Request, res: Response) => {
       name,
       email,
       password,
-      avatar
+      avatar,
+      type: userTypes.USER
     });
 
     const salt = await bcrypt.genSalt(10);
