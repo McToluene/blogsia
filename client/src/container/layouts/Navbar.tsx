@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { makeStyles, Theme } from "@material-ui/core/styles";
+import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
@@ -16,29 +16,31 @@ interface INavProps {
   auth: AuthState;
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
-  toolbar: {
-    borderBottom: `1px solid ${theme.palette.divider}`
-  },
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    toolbar: {
+      borderBottom: `1px solid ${theme.palette.divider}`
+    },
 
-  toolbarTitle: {
-    flex: 1
-  },
+    toolbarTitle: {
+      flex: 1
+    },
 
-  toolbarSecondary: {
-    justifyContent: "space-between",
-    overflowX: "auto"
-  },
+    toolbarSecondary: {
+      justifyContent: "space-between",
+      overflowX: "auto"
+    },
 
-  toolbarLink: {
-    padding: theme.spacing(1),
-    flexShrink: 0
-  },
+    toolbarLink: {
+      padding: theme.spacing(1),
+      flexShrink: 0
+    },
 
-  loginBtn: {
-    marginRight: theme.spacing(1)
-  }
-}));
+    loginBtn: {
+      marginRight: theme.spacing(1)
+    }
+  })
+);
 
 const Navbar: React.FC<INavProps> = props => {
   const classes = useStyles();

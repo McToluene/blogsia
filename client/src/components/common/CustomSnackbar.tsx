@@ -1,6 +1,6 @@
 import React, { Fragment, FC } from "react";
 import { connect } from "react-redux";
-import { Alert } from "../store/alert/type";
+import { Alert } from "../../store/alert/type";
 import CustomAlert from "./CustomAlert";
 
 interface IProps {

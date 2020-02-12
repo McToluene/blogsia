@@ -1,19 +1,23 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, FC } from "react";
 import queryString from "query-string";
 import "./App.css";
-import Navbar from "./container/layouts/Navbar";
 import { ThemeProvider, Container } from "@material-ui/core";
 import theme from "./Theme";
-import Landing from "./container/layouts/Landing";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import Login from "./components/auth/Login";
-import Register from "./components/auth/Register";
-import Footer from "./container/layouts/Footer";
+import {
+  BrowserRouter as Router,
+  Route as DefaultRoute,
+  Switch
+} from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./store/store";
-import CustomSnackbar from "./components/CustomSnackbar";
 import setAuthToken from "./utils/setAuthToken";
 import { loadUser } from "./store/auth/action";
+import Navbar from "./container/layouts/Navbar";
+import Footer from "./container/layouts/Footer";
+import Landing from "./container/layouts/Landing";
+import Dashboard from "./container/dashboard/Dashboard";
+import Login from "./components/auth/Login";
+import Register from "./components/auth/Register";
 
 const sections = [
   { title: "Technology", url: "#" },
@@ -27,6 +31,39 @@ const sections = [
   { title: "Style", url: "#" },
   { title: "Travel", url: "#" }
 ];
+
+const DefaultLayout: FC<any> = ({ children }) => {
+  return (
+    <Fragment>
+      <Container style={{ minHeight: "100vh" }} maxWidth="lg">
+        <Navbar sections={sections} title="Blogsia" />
+        <main>{children}</main>
+      </Container>
+      <Footer />
+    </Fragment>
+  );
+};
+
+const DashboardLayout: FC<any> = ({ children }) => (
+  <Fragment>{children}</Fragment>
+);
+
+const Route: FC<any> = ({
+  component: Component,
+  layout: Layout = DefaultLayout,
+  ...rest
+}) => {
+  return (
+    <DefaultRoute
+      {...rest}
+      render={props => (
+        <Layout>
+          <Component {...props} />
+        </Layout>
+      )}
+    />
+  );
+};
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -44,26 +81,22 @@ const App: React.FC<any> = props => {
     store.dispatch<any>(loadUser());
   });
   return (
-    <ThemeProvider theme={theme}>
-      <Provider store={store}>
-        <Router>
-          <Fragment>
-            <Container style={{ minHeight: "100vh" }} maxWidth="lg">
-              <Navbar sections={sections} title="Blogsia" />
-              <main>
-                <Route path="/" exact={true} component={Landing} />
-                <CustomSnackbar />
-                <Switch>
-                  <Route path="/login" exact={true} component={Login} />
-                  <Route path="/register" exact={true} component={Register} />
-                </Switch>
-              </main>
-            </Container>
-            <Footer />
-          </Fragment>
-        </Router>
-      </Provider>
-    </ThemeProvider>
+    <Provider store={store}>
+      <Router>
+        <ThemeProvider theme={theme}>
+          <Switch>
+            <Route exact path="/" component={Landing} />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/register" component={Register} />
+            <Route
+              path="/dashboard"
+              component={Dashboard}
+              layout={DashboardLayout}
+            />
+          </Switch>
+        </ThemeProvider>
+      </Router>
+    </Provider>
   );
 };
 
